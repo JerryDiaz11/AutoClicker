@@ -2,11 +2,12 @@ package clicker;
 
 import java.awt.Robot;
 
-public abstract class ClickerBehavior implements AutoClicker {
+public abstract class AbstractClickerBehavior implements AutoClicker {
 
 	protected AutoClicker clicker;
 	
-	public ClickerBehavior(int delay,AutoClicker clicker) {
+	
+	public AbstractClickerBehavior(int delay,AutoClicker clicker) {
 		this.clicker = clicker;
 		this.delayInMiliseconds = delay;
 	}

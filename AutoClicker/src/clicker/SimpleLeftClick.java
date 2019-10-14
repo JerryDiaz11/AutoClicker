@@ -3,9 +3,9 @@ package clicker;
 import java.awt.event.InputEvent;
 
 
-public class SimpleClick extends ClickerBehavior {
+public class SimpleLeftClick extends AbstractClickerBehavior {
 	
-	public SimpleClick(int delay, AutoClicker clicker) {
+	public SimpleLeftClick(int delay, AutoClicker clicker) {
 		super(delay,clicker);
 	}
 
@@ -19,6 +19,5 @@ public class SimpleClick extends ClickerBehavior {
 		}
 		return super.doClickBehavior(currentTimeMillis);
 	}
-
 
 }

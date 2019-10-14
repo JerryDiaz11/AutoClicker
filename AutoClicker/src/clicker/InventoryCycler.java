@@ -3,7 +3,7 @@ package clicker;
 import java.awt.event.KeyEvent;
 
 
-public class InventoryCycler extends ClickerBehavior {
+public class InventoryCycler extends AbstractClickerBehavior {
 	static final int[] keys = {
 			KeyEvent.VK_1,
 			KeyEvent.VK_2,

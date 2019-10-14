@@ -2,6 +2,12 @@ package clicker;
 
 import java.awt.MouseInfo;
 
+/**
+ * @version 1.0
+ * @author Austin
+ *
+ */
+
 public class Application {
 
 

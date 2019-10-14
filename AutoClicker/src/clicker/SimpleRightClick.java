@@ -3,7 +3,7 @@ package clicker;
 import java.awt.event.InputEvent;
 
 
-public class SimpleRightClick extends ClickerBehavior {
+public class SimpleRightClick extends AbstractClickerBehavior {
 	
 	public SimpleRightClick(int delay, AutoClicker clicker) {
 		super(delay,clicker);

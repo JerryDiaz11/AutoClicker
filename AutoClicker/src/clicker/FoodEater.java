@@ -3,7 +3,7 @@ package clicker;
 import java.awt.event.InputEvent;
 
 
-public class FoodEater extends ClickerBehavior {
+public class FoodEater extends AbstractClickerBehavior {
 	
 	public FoodEater(int delay, AutoClicker clicker) {
 		super(delay,clicker);

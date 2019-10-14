@@ -4,7 +4,7 @@ import java.awt.MouseInfo;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-public class MoveMouse extends ClickerBehavior {
+public class MoveMouse extends AbstractClickerBehavior {
 	
 	public MoveMouse(int delay, AutoClicker clicker) {
 		super(delay,clicker);

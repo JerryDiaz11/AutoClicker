@@ -14,7 +14,7 @@ public class Application {
 		
 		int startDelay = 1000;
 		
-		AutoClicker ac = new SimpleRightClick(1*secs, new ClickerImpl()); 
+		AutoClicker ac = new InventoryCycler(70, new SimpleRightClick(1*secs, new ClickerImpl())); 
 		long startTime = System.currentTimeMillis();
 		long maxTimeInMillis = 2*hours+startDelay;
 		

@@ -35,7 +35,10 @@ public class Application {
 			CommandLine line = parser.parse(options, args);
 			if (line.hasOption("help")) {
 				HelpFormatter formatter = new HelpFormatter();
-				formatter.printHelp( "ant", options );
+				formatter.printHelp( "java -jar clicker.jar [options] [Arg 1 [Arg2 ...]]\n"
+						+ "Example 1: java -jar clicker.jar --keyPress 15000 F5\n"
+						+ "Example 2: java -jar clicker.jar --keyPress 15000 F5 -m1 3000\n\n"
+						+ "Note: All delays are given in milliseconds (1/1000th of a second). So one second should be entered as '1000'.\n\n", options );
 				return;
 			}
 			
@@ -51,15 +54,18 @@ public class Application {
 				System.err.println(String.format("Using right click with %dms delay", delay));
 				ac = new SimpleRightClick(delay, ac);
 			}
-			if(line.hasOption("eatFood")) {
-				int delay = getDelay("eatFood",line);
-				System.err.println(String.format("Using eat food with %dms delay", delay));
-				ac = new FoodEater(delay, ac);
-			}
-			if(line.hasOption("cycleInventory")) {
-				int delay = getDelay("cycleInventory",line);
-				System.err.println(String.format("Using cycle Inventory with %dms delay", delay));
-				ac = new InventoryCycler(delay, ac);
+			/*
+			 * if(line.hasOption("eatFood")) { int delay = getDelay("eatFood",line);
+			 * System.err.println(String.format("Using eat food with %dms delay", delay));
+			 * ac = new FoodEater(delay, ac); } if(line.hasOption("cycleInventory")) { int
+			 * delay = getDelay("cycleInventory",line);
+			 * System.err.println(String.format("Using cycle Inventory with %dms delay",
+			 * delay)); ac = new InventoryCycler(delay, ac); }
+			 */
+			if(line.hasOption("keyPress")) {
+				int delay = getDelayMultiArg("keyPress", line, 0);
+				String key = line.getOptionValues("keyPress")[1];
+				ac = new KeyPresser(key,delay,ac);
 			}
 			
 			long startTime = System.currentTimeMillis();
@@ -98,11 +104,22 @@ public class Application {
 		}
 		
 	}
+	
+	private static int getDelayMultiArg(String optString, CommandLine line, int argIndex) {
+		try {
+			String value = line.getOptionValues(optString)[argIndex];
+			int delay = Integer.parseInt(value);
+			return delay;
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Illegal delay given for "+optString+" option.");
+		}
+		
+	}
 
 
 	private static void configureArgsOptions() {
 
-		options.addOption("i","immediate",false,"Immediately start all behaviors, i.e. don't use behavior delay at start.");
+		//options.addOption("i","immediate",false,"Immediately start all behaviors, i.e. don't use behavior delay at start.");
 		options.addOption(new Option("d","debug",false,"Enables debug mode. No actions are takenby application. Instead, actions are printed to standard output."));
 		options.addOption(new Option("h","help",false,"Lists and briefly describes each behavior currently implemented."));
 		
@@ -114,13 +131,23 @@ public class Application {
 		rightClick.setArgName("delay");
 		options.addOption(rightClick);
 		
-		Option cycleInv = new Option("c","cycleInventory",true,"Cycles numbers from 1-9 with a defined delay between each");
-		cycleInv.setArgName("delay");
-		options.addOption(cycleInv);
+		/*
+		 * Option cycleInv = new Option("c","cycleInventory",
+		 * true,"Cycles numbers from 1-9 with a defined delay between each");
+		 * cycleInv.setArgName("delay"); options.addOption(cycleInv);
+		 */
 		
-		Option eatFood = new Option("f", "eatFood",true,"Holds right mouse button for 2 seconds, then releases. Repeats at regular intervals");
-		eatFood.setArgName("delay");
-		options.addOption(eatFood);
+		/*
+		 * Option eatFood = new Option("f", "eatFood",
+		 * true,"Holds right mouse button for 2 seconds, then releases. Repeats at regular intervals"
+		 * ); eatFood.setArgName("delay"); options.addOption(eatFood);
+		 */
+		
+		Option keyPress = new Option ("k","keyPress",true,"Presses the specified key at a regular interval with the specified delay");
+		keyPress.setArgs(2);
+		keyPress.setArgName("delay> <key");
+		keyPress.setValueSeparator(' ');
+		options.addOption(keyPress);
 		
 	}
 

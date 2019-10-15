@@ -27,6 +27,8 @@ public class Application {
 	static int startDelay = 1000;
 	
 	public static void main(String[] args) {
+		
+		System.out.println(args);
 		configureArgsOptions();
 		
 		CommandLineParser parser = new DefaultParser();

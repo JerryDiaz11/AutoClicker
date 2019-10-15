@@ -24,7 +24,8 @@ public abstract class AbstractClickerBehavior implements AutoClicker {
 	public void setDelayInMiliseconds(int delay) { this.delayInMiliseconds = delay;}
 	
 	boolean isTimeToExecute(long currentTimeMillis) {
-		if (currentTimeMillis - timeOfLastBehaviorExecute > delayInMiliseconds) {
+		long timePassed = currentTimeMillis - timeOfLastBehaviorExecute;
+		if (timePassed > delayInMiliseconds) {
 			markTimeOfLastBehaviorExecute(currentTimeMillis);
 			return true;
 		}

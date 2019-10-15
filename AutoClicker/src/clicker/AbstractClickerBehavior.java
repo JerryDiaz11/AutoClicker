@@ -2,11 +2,12 @@ package clicker;
 
 import java.awt.Robot;
 
-public abstract class ClickerBehavior implements AutoClicker {
+public abstract class AbstractClickerBehavior implements AutoClicker {
 
 	protected AutoClicker clicker;
 	
-	public ClickerBehavior(int delay,AutoClicker clicker) {
+	
+	public AbstractClickerBehavior(int delay,AutoClicker clicker) {
 		this.clicker = clicker;
 		this.delayInMiliseconds = delay;
 	}
@@ -23,7 +24,8 @@ public abstract class ClickerBehavior implements AutoClicker {
 	public void setDelayInMiliseconds(int delay) { this.delayInMiliseconds = delay;}
 	
 	boolean isTimeToExecute(long currentTimeMillis) {
-		if (currentTimeMillis - timeOfLastBehaviorExecute > delayInMiliseconds) {
+		long timePassed = currentTimeMillis - timeOfLastBehaviorExecute;
+		if (timePassed > delayInMiliseconds) {
 			markTimeOfLastBehaviorExecute(currentTimeMillis);
 			return true;
 		}

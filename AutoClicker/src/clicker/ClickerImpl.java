@@ -7,9 +7,9 @@ public class ClickerImpl implements AutoClicker {
 	
 	 private Robot rob;
 	 
-	 public ClickerImpl() {
+	 public ClickerImpl(boolean debug) {
 		 try {
-			this.rob = new Robot();
+			this.rob = debug?new TextRobot():new Robot();
 		} catch (AWTException e) {
 			System.out.print("Unable to initialize Robot.");
 			e.printStackTrace();

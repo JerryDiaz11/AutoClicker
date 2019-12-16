@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="AutoClicker/src"/>
+	<classpathentry kind="lib" path="clicker-1.2.jar"/>
+	<classpathentry kind="lib" path="clicker-v1.1.jar"/>
+	<classpathentry kind="lib" path="clicker.jar"/>
+	<classpathentry kind="lib" path="commons-cli-1.4/commons-cli-1.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="commons-cli-1.4/commons-cli-1.4-sources.jar"/>
+	<classpathentry kind="lib" path="commons-cli-1.4/commons-cli-1.4-test-sources.jar"/>
+	<classpathentry kind="lib" path="commons-cli-1.4/commons-cli-1.4-tests.jar"/>
+	<classpathentry kind="lib" path="commons-cli-1.4/commons-cli-1.4.jar"/>
+	<classpathentry kind="output" path="AutoClicker/bin"/>
+</classpath>

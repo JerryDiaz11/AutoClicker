@@ -1,7 +1,5 @@
 package clicker;
 
-import java.awt.event.InputEvent;
-
 public class KeyPresser extends AbstractClickerBehavior {
 
 	private int keyCode;

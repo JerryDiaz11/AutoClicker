@@ -1,8 +1,6 @@
 package clicker;
 
 import java.awt.MouseInfo;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 
 public class MoveMouse extends AbstractClickerBehavior {
 	

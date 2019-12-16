@@ -15,9 +15,14 @@ public class InventoryCycler extends AbstractClickerBehavior {
 			KeyEvent.VK_8,
 			KeyEvent.VK_9};
 	int nextInv = 0;
+	int numSlots = 9;
 	
-	public InventoryCycler(int delay, AutoClicker clicker) {
+	public InventoryCycler(int delay, int numSlots, AutoClicker clicker) {
 		super(delay,clicker);
+		if(numSlots < 1 || numSlots > 9) {
+			throw new IllegalArgumentException("Number of slots, x, must be in the range: [1,9]. Value entered: "+ numSlots);
+		}
+		this.numSlots = numSlots;
 	}
 
 	@Override
@@ -27,7 +32,7 @@ public class InventoryCycler extends AbstractClickerBehavior {
 			clicker.rob().delay(100);
 			clicker.rob().keyRelease(keys[nextInv++]);
 			clicker.rob().delay(10);
-			nextInv%=9;
+			nextInv%=numSlots;
 		}
 		return super.doClickBehavior(currentTimeMillis);
 	}

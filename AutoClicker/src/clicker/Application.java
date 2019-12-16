@@ -1,6 +1,10 @@
 package clicker;
 
 import java.awt.MouseInfo;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.JOptionPane;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -19,16 +23,14 @@ import org.apache.commons.cli.ParseException;
 public class Application {
 
 	static final Options options = new Options();
-	static final int secs = 1000;
-	static final int mins = 60 * secs;
-	static final int hours = 60 * mins;
 	
 	
-	static int startDelay = 1000;
+	static long startDelay = 1000;
+	static long defaultDuration = TimeUnit.HOURS.toMillis(12);
 	
 	public static void main(String[] args) {
 		
-		System.out.println(args);
+		System.out.println("Arguments: " + Arrays.deepToString(args));
 		configureArgsOptions();
 		
 		CommandLineParser parser = new DefaultParser();
@@ -63,35 +65,47 @@ public class Application {
 				ac = new FoodEater(delay, ac);
 			}
 			if (line.hasOption("cycleInventory")) {
-				int delay = getIntegerArg("cycleInventory", line);
+				int delay = getIntMultiArg("cycleInventory", line, 0);
+				int numSlots = getIntMultiArg("cycleInventory", line, 1);
 				System.err.println(String.format("Using cycle Inventory with %dms delay", delay));
-				ac = new InventoryCycler(delay, ac);
+				ac = new InventoryCycler(delay, numSlots, ac);
 			}
 			 
 			if(line.hasOption("keyPress")) {
-				int delay = getDelayMultiArg("keyPress", line, 0);
+				int delay = getIntMultiArg("keyPress", line, 0);
 				String key = line.getOptionValues("keyPress")[1];
 				ac = new KeyPresser(key,delay,ac);
 			}
 			
-			long maxTimeInMillis = 2*hours+startDelay;
-			
-			if(line.hasOption("maxTime")) {
-				maxTimeInMillis = (long)(hours*getDoubleArg("maxTime",line));
+			if(line.hasOption("dupe")) {
+				ac = new Duper(ac);
 			}
 			
-			System.err.println(String.format("Application will run for %5.2f hours", new Double(maxTimeInMillis)/hours));
+			long maxTimeInMillis = defaultDuration+startDelay;
+			
+			if(line.hasOption("maxTime")) {
+				maxTimeInMillis = TimeUnit.HOURS.toMillis((long)getDoubleArg("maxTime",line));
+			}
+			
+			System.out.println("Application will run for " + millisToTime(maxTimeInMillis));
 			
 			long startTime = System.currentTimeMillis();
 			
 			
 			
-			ac.rob().delay(startDelay); //wait for Alt+Tab
+			ac.rob().delay((int)startDelay); //wait for Alt+Tab
 			
 			while (true) {
-				if (System.currentTimeMillis() - startTime > maxTimeInMillis) break;
+				long duration =System.currentTimeMillis() - startTime; 
+				if (duration > maxTimeInMillis) {
+					terminate("Duration exceeded maximum time. Total runtime: " + millisToTime(duration));
+					break;
+				}
 				
-				if (mouseKillCondition()) break;
+				if (mouseKillCondition()) {
+					terminate("Execution terminated by user. Total runtime: "+ millisToTime(duration));
+					break;
+				}
 				
 				ac.doClickBehavior(System.currentTimeMillis());
 				ac.rob().delay(10);
@@ -106,6 +120,10 @@ public class Application {
 		}
 		
         
+	}
+	
+	private static void terminate (String reason) {
+		JOptionPane.showMessageDialog(null, reason, "Execution Terminated", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 
@@ -129,7 +147,7 @@ public class Application {
 		
 	}
 	
-	private static int getDelayMultiArg(String optString, CommandLine line, int argIndex) {
+	private static int getIntMultiArg(String optString, CommandLine line, int argIndex) {
 		try {
 			String value = line.getOptionValues(optString)[argIndex];
 			int delay = Integer.parseInt(value);
@@ -157,8 +175,10 @@ public class Application {
 		
 		
 		Option cycleInv = new Option("c", "cycleInventory", true,
-				"Cycles numbers from 1-9 with a defined delay between each");
-		cycleInv.setArgName("delay");
+				"Cycles numbers from 1-x, where 1<= x <=9 with a defined delay between each keypress.");
+		cycleInv.setArgs(2);
+		cycleInv.setArgName("delay> <numSlots");
+		cycleInv.setValueSeparator(' ');
 		options.addOption(cycleInv);
 
 		Option eatFood = new Option("f", "eatFood", true,
@@ -167,6 +187,8 @@ public class Application {
 		options.addOption(eatFood);
 		
 		options.addOption(new Option("t","maxTime",true,"Sets the maximum number of hours to run the application (Default=2 hours)."));
+		
+		options.addOption(new Option("d","dupe",false,"perfect timing to piston-dupe item after button press."));
 		
 		Option keyPress = new Option ("k","keyPress",true,"Presses the specified key at a regular interval with the specified delay");
 		keyPress.setArgs(2);
@@ -179,6 +201,13 @@ public class Application {
 
 	private static boolean mouseKillCondition() {
 		return MouseInfo.getPointerInfo().getLocation().getX() < 5 && MouseInfo.getPointerInfo().getLocation().getY() < 5;
+	}
+	
+	private static String millisToTime(long millis) {		return String.format("%d hours, %d min, %d sec", 
+				TimeUnit.MILLISECONDS.toHours(millis),
+			    TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+			    TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+			);
 	}
 }
 

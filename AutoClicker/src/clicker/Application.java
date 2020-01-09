@@ -15,7 +15,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 /**
- * @version 1.0
+ * @version 1.5
  * @author Austin
  *
  */
@@ -40,8 +40,8 @@ public class Application {
 			if (line.hasOption("help")) {
 				HelpFormatter formatter = new HelpFormatter();
 				formatter.printHelp( "java -jar clicker.jar [options] [Arg 1 [Arg2 ...]]\n"
-						+ "Example 1: java -jar clicker.jar --keyPress 15000 F5\n"
-						+ "Example 2: java -jar clicker.jar --keyPress 15000 F5 -m1 3000\n\n"
+						+ "Example 1: java -jar clicker.jar --keyPress (F5=15000)\n"
+						+ "Example 2: java -jar clicker.jar --keyPress (F5=15000) -m1 3000\n\n"
 						+ "Note: All delays are given in milliseconds (1/1000th of a second). So one second should be entered as '1000'.\n\n", options );
 				return;
 			}
@@ -72,9 +72,8 @@ public class Application {
 			}
 			 
 			if(line.hasOption("keyPress")) {
-				int delay = getIntMultiArg("keyPress", line, 0);
-				String key = line.getOptionValues("keyPress")[1];
-				ac = new KeyPresser(key,delay,ac);
+				String cmdLineOptions = line.getOptionValues("keyPress")[0];
+				ac = KeyPresserBuilder.build(ac, cmdLineOptions);
 			}
 			
 			if(line.hasOption("dupe")) {
@@ -190,10 +189,10 @@ public class Application {
 		
 		options.addOption(new Option("d","dupe",false,"perfect timing to piston-dupe item after button press."));
 		
-		Option keyPress = new Option ("k","keyPress",true,"Presses the specified key at a regular interval with the specified delay");
-		keyPress.setArgs(2);
-		keyPress.setArgName("delay> <key");
-		keyPress.setValueSeparator(' ');
+		Option keyPress = new Option ("k","keyPress",true,KeyPresserBuilder.getInstructions());
+		keyPress.setArgs(1);
+		keyPress.setArgName("(key1=delay1=offset1,key2=...)");
+
 		options.addOption(keyPress);
 		
 	}

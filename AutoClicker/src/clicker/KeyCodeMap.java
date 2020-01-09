@@ -212,7 +212,7 @@ public class KeyCodeMap {
 	}
 	
 	public int getCode(String key) {
-		return keyMap.get(key);
+		return keyMap.get(key.toUpperCase());
 	}
 
 	

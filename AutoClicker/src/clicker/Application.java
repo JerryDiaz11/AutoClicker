@@ -15,7 +15,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 /**
- * @version 1.5
+ * @version 1.6
  * @author Austin
  *
  */
@@ -159,7 +159,6 @@ public class Application {
 
 
 	private static void configureArgsOptions() {
-
 		//options.addOption("i","immediate",false,"Immediately start all behaviors, i.e. don't use behavior delay at start.");
 		options.addOption(new Option("d","debug",false,"Enables debug mode. No actions are takenby application. Instead, actions are printed to standard output."));
 		options.addOption(new Option("h","help",false,"Lists and briefly describes each behavior currently implemented."));
@@ -191,7 +190,7 @@ public class Application {
 		
 		Option keyPress = new Option ("k","keyPress",true,KeyPresserBuilder.getInstructions());
 		keyPress.setArgs(1);
-		keyPress.setArgName("(key1=delay1=offset1,key2=...)");
+		keyPress.setArgName("key1=delay1=offset1,key2=...");
 
 		options.addOption(keyPress);
 		

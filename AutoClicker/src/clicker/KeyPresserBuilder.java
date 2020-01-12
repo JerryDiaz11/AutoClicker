@@ -5,10 +5,10 @@ package clicker;
  * builds the specified KeyPresser. The {@code cmdLineOptions} value must follow
  * this format:
  * 
- * {@code (key1=delay1=offset1,key2=delay2=offset2,key3=delay3=offset3,...)}
+ * {@code key1=delay1=offset1,key2=delay2=offset2,key3=delay3=offset3,...}
  * 
  * Note: Offsets are optional. the following is a valid entry:
- * {@code (a=2000,b=2000=1000)} This entry will cause the application to
+ * {@code a=2000,b=2000=1000} This entry will cause the application to
  * alternate between 'a' and 'b' every 1 second.
  * 
  * @author Austin
@@ -20,11 +20,8 @@ public class KeyPresserBuilder {
 	}
 
 	public static AutoClicker build(AutoClicker ac, String cmdLineOptions) {
-		
-		String trimmedOpts = cmdLineOptions.substring(1, cmdLineOptions.length() - 1);
-		
-		
-		String[] keyDelayPairs = trimmedOpts.split(",");
+				
+		String[] keyDelayPairs = cmdLineOptions.split(",");
 
 		for (String kdPair : keyDelayPairs) {
 			String[] kdPairArr = kdPair.split("=");

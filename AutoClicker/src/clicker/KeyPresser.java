@@ -1,7 +1,11 @@
 package clicker;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+
 public class KeyPresser extends AbstractClickerBehavior {
 
+	private Robot rob;
 	private int keyCode;
 	private int offset;
 	private boolean awaitingOffset = true;
@@ -11,6 +15,12 @@ public class KeyPresser extends AbstractClickerBehavior {
 	
 	public KeyPresser(String keyString, int delay, int offset, int duration, AutoClicker clicker) {
 		super(delay,clicker);
+		try {
+			this.rob = new Robot();
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+		
 		this.keyCode = map.getCode(keyString);
 		this.offset = offset;
 		this.duration = duration;
@@ -31,10 +41,10 @@ public class KeyPresser extends AbstractClickerBehavior {
 		}
 		
 		if(!awaitingOffset && isTimeToExecute(currentTimeMillis)) {
-			clicker.rob().keyPress(this.keyCode);
-			clicker.rob().delay(this.duration);
-			clicker.rob().keyRelease(this.keyCode);
-			clicker.rob().delay(10);
+			this.rob.keyPress(this.keyCode);
+			this.rob.delay(this.duration);
+			this.rob.keyRelease(this.keyCode);
+			this.rob.delay(10);
 		} 
 		
 		

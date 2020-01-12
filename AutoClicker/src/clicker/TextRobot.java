@@ -13,6 +13,7 @@ import java.util.HashMap;
  */public class TextRobot extends Robot {
 	
 	private HashMap<String,Long> eventTimestamps = new HashMap<>();
+	private long lastEventTime = 0;
 
 	public TextRobot() throws AWTException {
 		super();
@@ -26,7 +27,8 @@ import java.util.HashMap;
 		Long lastTimeStamp = eventTimestamps.getOrDefault(keyText, now);
 		eventTimestamps.put(keyText, now);
 		long delay = now - lastTimeStamp;
-		System.out.println(keyText +" pressed. Delay: "+ delay);
+		System.out.println((now -lastEventTime) + "\t" + keyText +" pressed. Delay: "+ delay);
+		lastEventTime = now;
     }
 	
 	@Override
@@ -36,7 +38,8 @@ import java.util.HashMap;
 		Long lastTimeStamp = eventTimestamps.getOrDefault(keyText, now);
 		eventTimestamps.put(keyText, now);
 		long delay = now - lastTimeStamp;
-		System.out.println(keyText +" released. Delay: "+ delay);
+		System.out.println((now -lastEventTime)  + "\t" + keyText +" released. Delay: "+ delay);
+		lastEventTime = now;
     }
 	
 	@Override
@@ -46,7 +49,8 @@ import java.util.HashMap;
 		Long lastTimeStamp = eventTimestamps.getOrDefault(keyText, now);
 		eventTimestamps.put(keyText, now);
 		long delay = now - lastTimeStamp;
-		System.out.println(keyText +" pressed. Delay: "+ delay);
+		System.out.println((now -lastEventTime)  + "\t" + keyText +" pressed. Delay: "+ delay);
+		lastEventTime = now;
 	}
 	
 	@Override
@@ -57,7 +61,8 @@ import java.util.HashMap;
 		Long lastTimeStamp = eventTimestamps.getOrDefault(keyText, now);
 		eventTimestamps.put(keyText, now);
 		long delay = now - lastTimeStamp;
-		System.out.println(keyText +" released. Delay: "+ delay);
+		System.out.println((now -lastEventTime)  + "\t" + keyText +" released. Delay: "+ delay);
+		lastEventTime = now;
 	}
 	
 	@Override
@@ -67,6 +72,7 @@ import java.util.HashMap;
 		Long lastTimeStamp = eventTimestamps.getOrDefault(keyText, now);
 		eventTimestamps.put(keyText, now);
 		long delay = now - lastTimeStamp;
-		System.out.println(keyText +" to ("+x+", "+y+"). Delay: "+ delay);
+		System.out.println((now -lastEventTime)  + "\t" + keyText +" to ("+x+", "+y+"). Delay: "+ delay);
+		lastEventTime = now;
 	}
 }

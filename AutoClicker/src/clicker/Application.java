@@ -1,8 +1,14 @@
 package clicker;
 
 import java.awt.MouseInfo;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.JOptionPane;
 
@@ -14,8 +20,9 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+
 /**
- * @version 1.6
+ * @version 1.7
  * @author Austin
  *
  */
@@ -37,6 +44,28 @@ public class Application {
 		
 		try {
 			CommandLine line = parser.parse(options, args);
+			
+			if(line.hasOption("preset")) {
+				String fileName = line.getOptionValues("preset")[0];
+				Map<String,String[]> result = null;
+				try (Stream<String> lines = Files.lines(Paths.get(fileName))) {
+					result = lines.collect(Collectors.toMap(k -> k.split("\t")[0], v-> v.split("\t")[1].split(" ")));
+				} catch (IOException e) {
+					e.printStackTrace();
+					return;
+				}
+				
+				String presetName = line.getOptionValues("preset")[1];
+				
+				System.out.println(String.format("Preset %s requetsed. The following arguments will be used:\n%s",
+						presetName,
+						Arrays.deepToString(result.get(presetName))));
+				
+				line = parser.parse(options, result.get(presetName)); 
+				
+				
+			}
+			
 			if (line.hasOption("help")) {
 				HelpFormatter formatter = new HelpFormatter();
 				formatter.printHelp( "java -jar clicker.jar [options] [Arg 1 [Arg2 ...]]\n"
@@ -47,6 +76,8 @@ public class Application {
 			}
 			
 			AutoClicker ac = new ClickerImpl(line.hasOption("debug"));
+			
+			
 			
 			if(line.hasOption("leftClick")) {
 				int delay = getIntegerArg("leftClick",line);
@@ -73,7 +104,7 @@ public class Application {
 			 
 			if(line.hasOption("keyPress")) {
 				String cmdLineOptions = line.getOptionValues("keyPress")[0];
-				ac = KeyPresserBuilder.build(ac, cmdLineOptions);
+				ac = KeyPresserBuilder.build(ac, cmdLineOptions, line.hasOption("debug"));
 			}
 			
 			if(line.hasOption("dupe")) {
@@ -191,8 +222,13 @@ public class Application {
 		Option keyPress = new Option ("k","keyPress",true,KeyPresserBuilder.getInstructions());
 		keyPress.setArgs(1);
 		keyPress.setArgName("key1=delay1=offset1,key2=...");
-
 		options.addOption(keyPress);
+		
+		Option preset = new Option("p","preset",true,"Select presets options from a file.");
+		preset.setArgs(2);
+		preset.setArgName("fileName> <presetName");
+		preset.setValueSeparator(' ');
+		options.addOption(preset);
 		
 	}
 

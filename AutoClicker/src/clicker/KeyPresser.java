@@ -13,10 +13,10 @@ public class KeyPresser extends AbstractClickerBehavior {
 	private KeyCodeMap map = new KeyCodeMap();
 	private int duration;
 	
-	public KeyPresser(String keyString, int delay, int offset, int duration, AutoClicker clicker) {
+	public KeyPresser(String keyString, int delay, int offset, int duration, boolean debug, AutoClicker clicker) {
 		super(delay,clicker);
 		try {
-			this.rob = new Robot();
+			this.rob = debug?new TextRobot():new Robot();
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}

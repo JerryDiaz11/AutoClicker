@@ -19,7 +19,7 @@ public class KeyPresserBuilder {
 	public KeyPresserBuilder() {
 	}
 
-	public static AutoClicker build(AutoClicker ac, String cmdLineOptions) {
+	public static AutoClicker build(AutoClicker ac, String cmdLineOptions, boolean debug) {
 				
 		String[] keyDelayPairs = cmdLineOptions.split(",");
 
@@ -55,7 +55,7 @@ public class KeyPresserBuilder {
 				}
 			}
 
-			ac = new KeyPresser(keyString, delay, offset, duration, ac);
+			ac = new KeyPresser(keyString, delay, offset, duration, debug, ac);
 		}
 
 		return ac;

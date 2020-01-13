@@ -2,6 +2,7 @@ package clicker;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.util.logging.Level;
 
 public class KeyPresser extends AbstractClickerBehavior {
 
@@ -24,7 +25,7 @@ public class KeyPresser extends AbstractClickerBehavior {
 		this.keyCode = map.getCode(keyString);
 		this.offset = offset;
 		this.duration = duration;
-		System.err.println(String.format("Using key presser to press %s with %dms delay %d offset and %d duration", keyString, delay, offset, duration));
+		Application.log.log(Level.INFO,String.format("Using key presser to press %s with %dms delay %d offset and %d duration", keyString, delay, offset, duration));
 	}
 
 	@Override

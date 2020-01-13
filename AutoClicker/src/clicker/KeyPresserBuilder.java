@@ -1,5 +1,7 @@
 package clicker;
 
+import java.util.logging.Level;
+
 /**
  * This class reads the String of the command line for the KeyPresser option and
  * builds the specified KeyPresser. The {@code cmdLineOptions} value must follow
@@ -32,6 +34,7 @@ public class KeyPresserBuilder {
 			try {
 				delay = Integer.parseInt(kdPairArr[1]);
 			} catch (NumberFormatException e) {
+				Application.log.log(Level.SEVERE,"Illegal delay given for KeyPresser option key: " + kdPair + ".");
 				throw new IllegalArgumentException("Illegal delay given for KeyPresser option key: " + kdPair + ".");
 			}
 
@@ -40,6 +43,7 @@ public class KeyPresserBuilder {
 				try {
 					offset = Integer.parseInt(kdPairArr[2]);
 				} catch (NumberFormatException e) {
+					Application.log.log(Level.SEVERE,"Illegal offset given for KeyPresser option key: " + kdPair + ".");
 					throw new IllegalArgumentException(
 							"Illegal offset given for KeyPresser option key: " + kdPair + ".");
 				}
@@ -50,6 +54,7 @@ public class KeyPresserBuilder {
 				try {
 					duration = Integer.parseInt(kdPairArr[3]);
 				} catch (NumberFormatException e) {
+					Application.log.log(Level.SEVERE,"Illegal duration given for KeyPresser option key: " + kdPair + ".");
 					throw new IllegalArgumentException(
 							"Illegal duration given for KeyPresser option key: " + kdPair + ".");
 				}

@@ -2,6 +2,7 @@ package clicker;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.util.logging.Level;
 
 public class ClickerImpl implements AutoClicker {
 	
@@ -11,7 +12,7 @@ public class ClickerImpl implements AutoClicker {
 		 try {
 			this.rob = debug?new TextRobot():new Robot();
 		} catch (AWTException e) {
-			System.out.print("Unable to initialize Robot.");
+			Application.log.log(Level.SEVERE,"Unable to initialize Robot.");
 			e.printStackTrace();
 		}
 	 }
